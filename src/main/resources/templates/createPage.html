@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Join Page</title>
+</head>
+<body>
+<h1>Join Page</h1>
+<hr>
+<p th:if="${responseMessage != null}" th:text="${responseMessage}"></p>
+
+<form id="joinForm" th:action="@{/create}" th:object="${userDto}" method="post">
+    <input type="text" th:field="*{username}" th:placeholder="username"/><br>
+    <input type="password" th:field="*{password}"  th:placeholder="password"/><br>
+    <input type="text" th:field="*{nickname}" th:placeholder="nickname"/><br>
+    <input type="email" th:field="*{email}" placeholder="email"/><br>
+    <button type="submit" th:text="회원가입"></button>
+</form>
+</body>
+</html>
