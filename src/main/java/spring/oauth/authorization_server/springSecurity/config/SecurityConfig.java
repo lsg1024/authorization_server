@@ -29,6 +29,26 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE) // 필터 체인 우선순위 설정
+    public SecurityFilterChain authorizationServer(HttpSecurity http) throws Exception {
+
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+
+        http
+                .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+                .oidc(withDefaults());
+        http
+                .exceptionHandling((exceptions) -> exceptions
+                        .defaultAuthenticationEntryPointFor(
+                                new LoginUrlAuthenticationEntryPoint("/login"),
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                        )
+                );
+
+        return http.build();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
@@ -44,6 +64,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings() {
+        return AuthorizationServerSettings.builder()
+                .build();
+    }
 
 
 }
